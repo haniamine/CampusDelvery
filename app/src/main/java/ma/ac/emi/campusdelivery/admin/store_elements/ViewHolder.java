@@ -1,4 +1,4 @@
-package ma.ac.emi.campusdelivery.elements;
+package ma.ac.emi.campusdelivery.admin.store_elements;
 
 import ma.ac.emi.campusdelivery.*;
 

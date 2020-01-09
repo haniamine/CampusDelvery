@@ -1,10 +1,11 @@
-package ma.ac.emi.campusdelivery.elements;
+package ma.ac.emi.campusdelivery.admin.store_elements;
 import ma.ac.emi.campusdelivery.admin.*;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ma.ac.emi.campusdelivery.R;
-import ma.ac.emi.campusdelivery.admin.AdminActivity;
 import ma.ac.emi.campusdelivery.models.Store;
 
 public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -53,7 +53,7 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
             }
 
             @Override
-            public void onItemLongClick(View view, int position) {
+            public void onItemLongClick(final View view, final int position) {
 
                 String name =storeList.get(position).getName();
 
@@ -62,6 +62,16 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0){
+                            String id = storeList.get(position).getId();
+                            String name = storeList.get(position).getName();
+                            Intent i = new Intent(view.getContext(),AddStoreActivity.class);
+                            i.putExtra("storeID",id);
+                            i.putExtra("storeName",name);
+                        }
+                        if (which ==1){
+
+                        }
 
                     }
                 });
