@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "432477951391",
+    "firebase_url": "https://campus-delivery-and.firebaseio.com",
+    "project_id": "campus-delivery-and",
+    "storage_bucket": "campus-delivery-and.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432477951391:android:d0d720d6a9d3b30a6399aa",
+        "android_client_info": {
+          "package_name": "ma.ac.emi.campusdelivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432477951391-hffb9nqvkaslft69de5fvkjmrtd01s4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ma.ac.emi.campusdelivery",
+            "certificate_hash": "64a8124fae49db8691411011615898020cc47a9d"
+          }
+        },
+        {
+          "client_id": "432477951391-panqs3uagotc1nl2f585tunp3numio3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOFSJf-OxpFVrPFYjNyBrCPcmxxLq1h20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432477951391-panqs3uagotc1nl2f585tunp3numio3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

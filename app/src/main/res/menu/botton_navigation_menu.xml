@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_stores"
+        android:icon="@drawable/ic_stores"
+        android:title="Commander" />
+    <item
+        android:id="@+id/navigation_deliver"
+        android:icon="@drawable/ic_deliver"
+        android:title="Livrer" />
+</menu>
