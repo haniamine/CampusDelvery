@@ -20,9 +20,11 @@ import java.util.UUID;
 
 public class AddMenuActivity extends AppCompatActivity {
 
-    EditText menuName,menuDesc;
+    EditText menuName,menuDesc,menuPrice;
     Button btnAdd,btnCancel;
     FirebaseFirestore db;
+    Bundle bundle;
+    String storeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,12 @@ public class AddMenuActivity extends AppCompatActivity {
         db  = FirebaseFirestore.getInstance();
         menuName = findViewById(R.id.menuName);
         menuDesc = findViewById(R.id.menuDesc);
+        menuPrice = findViewById(R.id.menuPrice);
+
+
+
+        bundle = getIntent().getExtras();
+        storeId = bundle.getString("storeId");
 
         btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +46,8 @@ public class AddMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = menuName.getText().toString().trim();
                 String desc = menuDesc.getText().toString().trim();
-                uploadData(name,desc);
+                String price = menuPrice.getText().toString().trim();
+                uploadData(name,desc,storeId,price);
                 finish();
             }
         });
@@ -52,13 +61,15 @@ public class AddMenuActivity extends AppCompatActivity {
 
     }
 
-    private void uploadData(String name,String desc) {
+    private void uploadData(String name,String desc,String storeId,String price) {
         String id = UUID.randomUUID().toString();
         Map<String,Object> doc = new HashMap<>();
         doc.put("id",id);
-        doc.put("menuName",name);
+        doc.put("menuTitle",name);
         doc.put("menuDesc",desc);
-        db.collection("Stores").document(id).set((doc)).addOnCompleteListener(new OnCompleteListener<Void>() {
+        doc.put("menuPrice",price);
+        doc.put("storeId",storeId);
+        db.collection("Menus").document(id).set((doc)).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 //pd.dismiss()

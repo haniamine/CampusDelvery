@@ -1,10 +1,7 @@
-package ma.ac.emi.campusdelivery.admin.store_elements;
-import ma.ac.emi.campusdelivery.admin.*;
+package ma.ac.emi.campusdelivery.list_elements;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +13,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ma.ac.emi.campusdelivery.MenuActivity;
 import ma.ac.emi.campusdelivery.R;
+import ma.ac.emi.campusdelivery.admin.AdminMenuActivity;
 import ma.ac.emi.campusdelivery.models.Store;
 
-public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class StoresCustomAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     ListActivity listActivity;
     List<Store> storeList;
     Context context;
 
-    public CustomAdapter(ListActivity listActivity, List<Store> storeList, Context context) {
+    public StoresCustomAdapter(ListActivity listActivity, List<Store> storeList, Context context) {
         // this.listActivity = listActivity;
         this.storeList = storeList;
         this.context = context;
     }
-    public CustomAdapter(List<Store> storeList) {
+    public StoresCustomAdapter(List<Store> storeList) {
         this.storeList = storeList;
     }
 
@@ -47,36 +46,20 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
             @Override
             public void onItemClick(View view, int position) {
 
-                String name =storeList.get(position).getName();
-                Toast.makeText(view.getContext(),name,Toast.LENGTH_SHORT).show();
-
+                String id = storeList.get(position).getId();
+                String name = storeList.get(position).getName();
+                Intent i = new Intent(view.getContext(), MenuActivity.class);
+                i.putExtra("storeID",id);
+                i.putExtra("storeName",name);
+                view.getContext().startActivity(i);
             }
 
             @Override
-            public void onItemLongClick(final View view, final int position) {
-
+            public void onItemLongClick(View view, int position) {
                 String name =storeList.get(position).getName();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                String[] options = {"Update","Supprimer"};
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0){
-                            String id = storeList.get(position).getId();
-                            String name = storeList.get(position).getName();
-                            Intent i = new Intent(view.getContext(),AddStoreActivity.class);
-                            i.putExtra("storeID",id);
-                            i.putExtra("storeName",name);
-                        }
-                        if (which ==1){
-
-                        }
-
-                    }
-                });
-
+                Toast.makeText(view.getContext(),name,Toast.LENGTH_SHORT).show();
             }
+
         });
 
         return viewHolder;

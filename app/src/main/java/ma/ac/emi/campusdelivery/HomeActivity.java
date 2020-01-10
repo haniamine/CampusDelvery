@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,7 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Button bt_click_me,btn_logout;
+    Button btn_logout;
+    TextView user;
     BottomNavigationView bottomNavigation;
 
     @Override
@@ -39,6 +41,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        FirebaseAuth fAuth;
+        fAuth = FirebaseAuth.getInstance();
+        String email = fAuth.getCurrentUser().getEmail();
+        user = findViewById(R.id.txtUser);
+        user.setText(email);
     }
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

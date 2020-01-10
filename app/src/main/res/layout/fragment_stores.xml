@@ -3,14 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StoresFragment">
+    android:layout_marginTop="40dp"
+    tools:context=".admin.AdminStoresFragment">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_stores"/>
+        android:src="@drawable/ic_stores"
+        tools:visibility="invisible" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="624dp"
+        android:backgroundTint="@color/colorPrimary"
+        tools:ignore="MissingConstraints"
+        android:layout_marginHorizontal="10dp">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="670dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"/>
+            </LinearLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
 
 </FrameLayout>

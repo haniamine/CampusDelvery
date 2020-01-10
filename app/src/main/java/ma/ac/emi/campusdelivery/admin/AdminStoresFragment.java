@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ma.ac.emi.campusdelivery.R;
-import ma.ac.emi.campusdelivery.admin.store_elements.CustomAdapter;
+import ma.ac.emi.campusdelivery.admin.list_elements.StoresCustomAdapter;
 import ma.ac.emi.campusdelivery.models.Store;
 
 public class AdminStoresFragment extends Fragment {
@@ -60,7 +60,9 @@ public class AdminStoresFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore db;
-    CustomAdapter adapter;
+    StoresCustomAdapter adapter;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,16 +78,21 @@ public class AdminStoresFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
+
+
         recyclerView = view.findViewById(R.id.recyler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         showData();
+
+
+
         return view;
     }
 
-    private void showData() {
+    public void showData() {
         db.collection("Stores")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -97,7 +104,7 @@ public class AdminStoresFragment extends Fragment {
                         }
 
                         //adapter
-                        adapter = new CustomAdapter(storeList);
+                        adapter = new StoresCustomAdapter(storeList);
                         recyclerView.setAdapter(adapter);
                     }
                 })

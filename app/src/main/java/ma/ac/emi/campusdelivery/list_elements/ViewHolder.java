@@ -1,6 +1,4 @@
-package ma.ac.emi.campusdelivery.admin.store_elements;
-
-import ma.ac.emi.campusdelivery.*;
+package ma.ac.emi.campusdelivery.list_elements;
 
 import android.view.View;
 import android.widget.TextView;
@@ -8,8 +6,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ma.ac.emi.campusdelivery.R;
+
 public class ViewHolder extends RecyclerView.ViewHolder {
-    TextView name;
+    TextView name,title,desc,price;
     View view;
 
     public ViewHolder(@NonNull View itemView) {
@@ -42,8 +42,8 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     private ViewHolder.ClickListener mclickListener;
     // interface for click listner
     public interface ClickListener{
-        void onItemClick(View view,int position);
-        void onItemLongClick(View view,int position);
+        void onItemClick(View view, int position);
+        void onItemLongClick(View view, int position);
 
     }
 

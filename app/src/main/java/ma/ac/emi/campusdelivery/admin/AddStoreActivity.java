@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,8 +25,10 @@ import java.util.UUID;
 public class AddStoreActivity extends AppCompatActivity {
 
     EditText storeName;
+    TextView title;
     Button btnAdd,btnCancel;
     FirebaseFirestore db;
+    String storeId,storeNam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +37,34 @@ public class AddStoreActivity extends AppCompatActivity {
         db  = FirebaseFirestore.getInstance();
         storeName = findViewById(R.id.storeName);
 
+        Bundle bundle = getIntent().getExtras();
+        if(bundle !=null){
+            // Update
+            title = findViewById(R.id.storeAddTitle);
+            title.setText("Mettre à jour un Magasin");
+            btnAdd.setText("Update");
+            storeId = bundle.getString("storeID");
+            storeNam = bundle.getString("storeName");
+
+            storeName.setText(storeNam);
+        }
+
+
         btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name = storeName.getText().toString().trim();
-                uploadData(name);
-                finish();
+                Bundle bundle = getIntent().getExtras();
+                if(bundle !=null){
+                    updateData(storeId,name);
+                }
+                else{
+                    uploadData(name);
+                    finish();
+                }
+
             }
         });
         btnCancel = findViewById(R.id.btnCancel);
@@ -50,6 +74,27 @@ public class AddStoreActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+    }
+
+    private void updateData(String id,String name) {
+        db.collection("Stores").document(id)
+                .update("storeName",name)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //pd.dismiss()
+                        Toast.makeText(AddStoreActivity.this, "Magasin à jour !", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //pd.dismiss()
+                        Toast.makeText(AddStoreActivity.this, "Erreur:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void uploadData(String name) {
@@ -57,13 +102,14 @@ public class AddStoreActivity extends AppCompatActivity {
         Map<String,Object> doc = new HashMap<>();
         doc.put("id",id);
         doc.put("storeName",name);
-        db.collection("Stores").document(id).set((doc)).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                //pd.dismiss()
-                Toast.makeText(AddStoreActivity.this, "Magasin Ajouté", Toast.LENGTH_SHORT).show();
-            }
-        })
+        db.collection("Stores").document(id).set((doc))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //pd.dismiss()
+                        Toast.makeText(AddStoreActivity.this, "Magasin Ajouté", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
