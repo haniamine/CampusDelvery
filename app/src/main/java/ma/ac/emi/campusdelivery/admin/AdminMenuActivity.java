@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -58,13 +59,13 @@ public class AdminMenuActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Button btnUpdate = findViewById(R.id.btnUpdate);
+        Button btnUpdate = findViewById(R.id.btnStoreUpdate);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                     Intent i = new Intent(AdminMenuActivity.this,AddStoreActivity.class);
-                    i.putExtra("storeID",storeId);
+                    i.putExtra("storeId",storeId);
                     i.putExtra("storeName",storeName);
                     startActivity(i);
 
@@ -74,7 +75,7 @@ public class AdminMenuActivity extends AppCompatActivity {
         btnSupp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteData(id);
+                deleteData(storeId);
             }
         });
         Button btnBack = findViewById(R.id.back);
@@ -94,6 +95,25 @@ public class AdminMenuActivity extends AppCompatActivity {
 
         showDataById(storeId) ;
 
+    }
+
+    private void deleteData(String id) {
+        db.collection("Stores").document(id)
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //pd.dismiss()
+                        Toast.makeText(AdminMenuActivity.this, "Magasin Suppimé !", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //pd.dismiss()
+                        Toast.makeText(AdminMenuActivity.this, "Erreur:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void showDataById(String id) {

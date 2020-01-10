@@ -1,6 +1,7 @@
 package ma.ac.emi.campusdelivery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -23,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import ma.ac.emi.campusdelivery.admin.AddStoreActivity;
 import ma.ac.emi.campusdelivery.deliver_list_element.DeliverCustomAdapter;
 import ma.ac.emi.campusdelivery.models.Command;
 
@@ -80,8 +85,24 @@ public class DeliverFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deliver, container, false);
+
+        Button btn = view.findViewById(R.id.btnLivraison);
+
+        FirebaseAuth mFirebaseAuth =FirebaseAuth.getInstance();
+        FirebaseUser mFireUser = mFirebaseAuth.getCurrentUser();
+        if(mFireUser == null){
+            btn.setVisibility(View.INVISIBLE);
+        }
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), UserDeliveryActivity.class));
+            }
+        });
+
         db = FirebaseFirestore.getInstance();
-        recyclerView = view.findViewById(R.id.recyler_view);
+        recyclerView = view.findViewById(R.id.deliver_recyler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -91,7 +112,7 @@ public class DeliverFragment extends Fragment {
     }
 
     public void showData() {
-        db.collection("Commands")
+        db.collection("Commands").whereEqualTo("deliverMail",null)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

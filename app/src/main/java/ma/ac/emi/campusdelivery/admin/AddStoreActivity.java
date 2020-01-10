@@ -36,21 +36,21 @@ public class AddStoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_store);
         db  = FirebaseFirestore.getInstance();
         storeName = findViewById(R.id.storeName);
-
+        btnAdd = findViewById(R.id.btnAdd);
         Bundle bundle = getIntent().getExtras();
         if(bundle !=null){
             // Update
             title = findViewById(R.id.storeAddTitle);
             title.setText("Mettre à jour un Magasin");
             btnAdd.setText("Update");
-            storeId = bundle.getString("storeID");
+            storeId = bundle.getString("storeId");
             storeNam = bundle.getString("storeName");
 
             storeName.setText(storeNam);
         }
 
 
-        btnAdd = findViewById(R.id.btnAdd);
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,8 +71,8 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
                 String menuPrice = menuList.get(position).getPrix();
                 String storeId = menuList.get(position).getStoreId();
                 getStoreName(storeId);
-                decideCommand(view);
                 makeCommand(menuTitle,menuPrice,storeId);
+                Toast.makeText(view.getContext(),"Commande effectué, elle vous sera bientôt livré",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -82,29 +83,6 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
         return viewHolder;
     }
 
-    private void  decideCommand(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setTitle("Confirmation de Commande");
-        builder.setMessage("Voulez-vous vraiment commander Ce Menu?");
-
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
     private void  getStoreName(String storeId) {
        db.collection("Stores").whereEqualTo("id",storeId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -129,7 +107,8 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
         doc.put("menuTitle",menuTitle);
         doc.put("menuPrice",menuPrice);
         doc.put("storeName",storeName);
-        doc.put("deliverMail",email);
+        doc.put("buyerMail",email);
+        doc.put("deliverMail",null);
         db.collection("Commands").document(id).set((doc)).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

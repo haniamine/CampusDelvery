@@ -45,13 +45,11 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
         viewHolder.setOnClickListener(new MenuViewHolder.ClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
-                Toast.makeText(view.getContext(),"Commande effecttué",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemLongClick(final View view, final int position) {
 
-                Toast.makeText(view.getContext(),"Commande effecttué",Toast.LENGTH_SHORT).show();
 
 
             }
