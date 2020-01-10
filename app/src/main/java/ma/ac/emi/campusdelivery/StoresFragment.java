@@ -1,8 +1,5 @@
 package ma.ac.emi.campusdelivery;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,8 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import ma.ac.emi.campusdelivery.admin.AddStoreActivity;
-import ma.ac.emi.campusdelivery.list_elements.StoresCustomAdapter;
+import ma.ac.emi.campusdelivery.store_list_elements.StoresCustomAdapter;
 import ma.ac.emi.campusdelivery.models.Store;
 
 
@@ -83,21 +78,12 @@ public class StoresFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stores, container, false);
-
-
         db = FirebaseFirestore.getInstance();
-
-
-
         recyclerView = view.findViewById(R.id.recyler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
-
         showData();
-
-
-
         return view;
     }
 

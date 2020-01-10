@@ -1,4 +1,4 @@
-package ma.ac.emi.campusdelivery.list_elements;
+package ma.ac.emi.campusdelivery.store_list_elements;
 
 import android.view.View;
 import android.widget.TextView;
@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ma.ac.emi.campusdelivery.R;
 
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class MenuViewHolder extends RecyclerView.ViewHolder {
     TextView name,title,desc,price;
     View view;
 
-    public ViewHolder(@NonNull View itemView) {
+    public MenuViewHolder(@NonNull View itemView) {
         super(itemView);
         view = itemView;
 
@@ -34,12 +34,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         });
 
         // Initialize view with layout
-        name = itemView.findViewById(R.id.cardName);
+        title = itemView.findViewById(R.id.cardTitle);
+        desc = itemView.findViewById(R.id.cardDesc);
+        price = itemView.findViewById(R.id.cardPrice);
 
 
     }
 
-    private ViewHolder.ClickListener mclickListener;
+    private MenuViewHolder.ClickListener mclickListener;
     // interface for click listner
     public interface ClickListener{
         void onItemClick(View view, int position);
@@ -47,7 +49,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void setOnClickListener(ViewHolder.ClickListener clickListener){
+    public void setOnClickListener(MenuViewHolder.ClickListener clickListener){
         mclickListener = clickListener;
     }
 

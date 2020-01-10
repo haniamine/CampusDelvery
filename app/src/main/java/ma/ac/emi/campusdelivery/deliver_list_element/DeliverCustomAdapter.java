@@ -1,4 +1,4 @@
-package ma.ac.emi.campusdelivery.list_elements;
+package ma.ac.emi.campusdelivery.deliver_list_element;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -15,22 +15,22 @@ import java.util.List;
 
 import ma.ac.emi.campusdelivery.MenuActivity;
 import ma.ac.emi.campusdelivery.R;
-import ma.ac.emi.campusdelivery.admin.AdminMenuActivity;
+import ma.ac.emi.campusdelivery.models.Command;
 import ma.ac.emi.campusdelivery.models.Store;
 
-public class StoresCustomAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class DeliverCustomAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     ListActivity listActivity;
-    List<Store> storeList;
+    List<Command> commandList;
     Context context;
 
-    public StoresCustomAdapter(ListActivity listActivity, List<Store> storeList, Context context) {
+    public DeliverCustomAdapter(ListActivity listActivity, List<Command> commandList, Context context) {
         // this.listActivity = listActivity;
-        this.storeList = storeList;
+        this.commandList = commandList;
         this.context = context;
     }
-    public StoresCustomAdapter(List<Store> storeList) {
-        this.storeList = storeList;
+    public DeliverCustomAdapter(List<Command> commandList) {
+        this.commandList = commandList;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class StoresCustomAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // inflate layout
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.model_store_layout,parent,false);
+                .inflate(R.layout.model_command_layout,parent,false);
 
         ViewHolder viewHolder = new ViewHolder(itemView);
         // item click
@@ -46,18 +46,10 @@ public class StoresCustomAdapter extends RecyclerView.Adapter<ViewHolder> {
             @Override
             public void onItemClick(View view, int position) {
 
-                String id = storeList.get(position).getId();
-                String name = storeList.get(position).getName();
-                Intent i = new Intent(view.getContext(), MenuActivity.class);
-                i.putExtra("storeID",id);
-                i.putExtra("storeName",name);
-                view.getContext().startActivity(i);
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-                String name =storeList.get(position).getName();
-                Toast.makeText(view.getContext(),name,Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -68,11 +60,13 @@ public class StoresCustomAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // bind   view / set data
-        holder.name.setText(storeList.get(position).getName());
+        holder.title.setText(commandList.get(position).getTitle());
+        holder.price.setText(commandList.get(position).getPrice());
+        holder.store.setText(commandList.get(position).getStore());
     }
 
     @Override
     public int getItemCount() {
-        return storeList.size();
+        return commandList.size();
     }
 }

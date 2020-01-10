@@ -56,7 +56,7 @@ public class AdminActivity extends AppCompatActivity {
                             openFragment(AdminStoresFragment.newInstance("", ""));
                             return true;
                         case R.id.admin_deliver:
-                            openFragment(AdminDeliverFragment.newInstance("", ""));
+                            openFragment(DeliverFragment.newInstance("", ""));
                             return true;
                     }
                     return false;

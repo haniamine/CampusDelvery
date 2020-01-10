@@ -1,13 +1,13 @@
-package ma.ac.emi.campusdelivery.list_elements;
+package ma.ac.emi.campusdelivery.store_list_elements;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,23 +16,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ma.ac.emi.campusdelivery.MenuActivity;
 import ma.ac.emi.campusdelivery.R;
-import ma.ac.emi.campusdelivery.admin.AddMenuActivity;
 import ma.ac.emi.campusdelivery.models.Menu;
+import ma.ac.emi.campusdelivery.models.Store;
 
 public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
 
     ListActivity listActivity;
     List<Menu> menuList;
     Context context;
+    FirebaseFirestore db;
+    String storeName;
 
     public MenusCustomAdapter(ListActivity listActivity, List<Menu> menuList, Context context) {
         // this.listActivity = listActivity;
@@ -50,14 +53,25 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.model_menu_layout,parent,false);
 
+
+        db  = FirebaseFirestore.getInstance();
+
+        if(!menuList.isEmpty()){
+            String storeId = menuList.get(0).getStoreId();
+            getStoreName(storeId);
+        }
+
         MenuViewHolder viewHolder = new MenuViewHolder(itemView);
         // item click
         viewHolder.setOnClickListener(new MenuViewHolder.ClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
-                String menuId = menuList.get(position).getId();
+                String menuTitle = menuList.get(position).getTitle();
+                String menuPrice = menuList.get(position).getPrix();
+                String storeId = menuList.get(position).getStoreId();
+                getStoreName(storeId);
                 decideCommand(view);
-                makeCommand(menuId);
+                makeCommand(menuTitle,menuPrice,storeId);
             }
 
             @Override
@@ -70,8 +84,8 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
 
     private void  decideCommand(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setTitle("Confirm");
-        builder.setMessage("Are you sure?");
+        builder.setTitle("Confirmation de Commande");
+        builder.setMessage("Voulez-vous vraiment commander Ce Menu?");
 
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
@@ -91,18 +105,30 @@ public class MenusCustomAdapter extends RecyclerView.Adapter<MenuViewHolder> {
         AlertDialog alert = builder.create();
         alert.show();
     }
+    private void  getStoreName(String storeId) {
+       db.collection("Stores").whereEqualTo("id",storeId).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for(DocumentSnapshot doc : task.getResult()){
+                            storeName=doc.getString("storeName");
+                        }
+                    }
+                });
+    }
 
-    private void makeCommand(String menuId) {
+    private void makeCommand(String menuTitle,String menuPrice,String storeId) {
         String id = UUID.randomUUID().toString();
         Map<String,Object> doc = new HashMap<>();
 
-        FirebaseFirestore db;
-        db  = FirebaseFirestore.getInstance();
+
         FirebaseAuth fAuth;
         fAuth = FirebaseAuth.getInstance();
         String email = fAuth.getCurrentUser().getEmail();
         doc.put("id",id);
-        doc.put("menuId",menuId);
+        doc.put("menuTitle",menuTitle);
+        doc.put("menuPrice",menuPrice);
+        doc.put("storeName",storeName);
         doc.put("deliverMail",email);
         db.collection("Commands").document(id).set((doc)).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

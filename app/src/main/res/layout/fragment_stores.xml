@@ -12,7 +12,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_stores"
-        tools:visibility="invisible" />
+        android:alpha="0.4"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
